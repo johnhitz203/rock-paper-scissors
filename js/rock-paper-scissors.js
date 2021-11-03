@@ -82,10 +82,24 @@ function game() {
     score = tallyScore(outcome.winner, score, i)
   }
 
+  // print fanfair.
   fandangles();
+
+  // print game outcome
   reportOutcome(score);
   console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
-  fandangles()
+
+  fandangles();
+
+  playAgain();
+}
+
+// playAgain function accepts 0 parameters
+// ask if player would like to play play again
+// clean up response
+// reset game'
+
+function playAgain() {
   let playAgain = window.prompt("Would you like to play again?")
   playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
                 playAgain.slice(1);
