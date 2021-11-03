@@ -64,7 +64,9 @@ function playRound(playerSelection, computerSelection) {
 // add option to play again
 function game() {
   let score = {player: 0, computer: 0}
-  for(i=0;i<5;i++) {
+  let rounds = window.prompt("How many rounds would you like to play?", 5);
+
+  for(i=0; i<rounds; i++) {
     console.log(`Score is Player: ${score.player} | Computer: ${score.computer}`);
     let playerSelection = window.prompt("Make a guess (Rock, Paper, Scissors)")
 
@@ -89,8 +91,10 @@ function game() {
   reportOutcome(score);
   console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
 
+  // print fanfair.
   fandangles();
 
+  // restart game
   playAgain();
 }
 
