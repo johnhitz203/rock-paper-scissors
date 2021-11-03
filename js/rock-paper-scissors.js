@@ -81,14 +81,11 @@ function game() {
     }
     score = tallyScore(outcome.winner, score, i)
   }
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  reportOutcome(score)
+
+  fandangles();
+  reportOutcome(score);
   console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  fandangles()
   let playAgain = window.prompt("Would you like to play again?")
   playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
                 playAgain.slice(1);
@@ -97,6 +94,14 @@ function game() {
     game();
   } else {
     console.log('Quiter!')
+  }
+}
+
+// fandangles function takes 0 parameters
+// log fandangles
+function fandangles() {
+  for(i=0; i<3; i++) {
+    console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   }
 }
 
