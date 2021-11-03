@@ -84,22 +84,32 @@ function game() {
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  if(score.player > score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Player wins the game!`);
-  } else if (score.player < score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
-  } else if (score.player === score.comuter) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. It's a tie!`);
-  }
+  reportOutcome(score)
   console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   let playAgain = window.prompt("Would you like to play again?")
-  if (playAgain === 'Yes!') {
+  playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
+                playAgain.slice(1);
+  console.log(playAgain);
+  if (playAgain === 'Yes') {
     game();
   } else {
     console.log('Quiter!')
+  }
+}
+
+// reportOutcome function takes one parameter (score)
+// logs the game outcome
+function reportOutcome(score) {
+  // console.log(score.player);
+  if(score.player === score.computer) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. It's a Tie!`);
+  } else if (score.player < score.computer) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
+  } else if (score.player > score.computer) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Player wins the game!`);
   }
 }
 
