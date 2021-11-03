@@ -11,9 +11,7 @@ function computerPlay() {
 
 // Play Round function //
 // takes two parameters (playerSelection, computerSelection)
-// if playerSelection is 'rock' and computerSelection is scissors player wins
-// if playerSelection is 'rock' and computerSelection is paper player loses
-// if playerSelection is 'rock' and computerSelection is 'rock' it's a tie
+// return an object with winner and msg
 /////////////////////////////////////////////////////
 // playerSelection | computerSelection | Winner    //
 // ----------------|-------------------|---------- //
@@ -35,29 +33,72 @@ function computerPlay() {
 // return string that declares the winner - "You Lose! Paper beats Rock."
 function playRound(playerSelection, computerSelection) {
   if(playerSelection === computerSelection) {
-    return 'Tie';
+    return {winner: 'none', msg: 'Tie'};
   } else if (playerSelection === 'Rock' && computerSelection === 'Paper') {
-    return 'Paper covers rock. Computer wins!';
+    return {winner: 'computer', msg: 'Paper covers rock. Computer wins the round!'};
   } else if (playerSelection === 'Paper' && computerSelection === 'Scissors') {
-    return 'Scissors cuts paper. Computer wins!';
+    return {winner: 'computer', msg: 'Scissors cuts paper. Computer wins the round!'};
   } else if(playerSelection === 'Scissors' && computerSelection === 'Rock') {
-    return 'Rock breaks scissors. Computer wins';
+    return {winner: 'computer', msg: 'Rock breaks scissors. Computer wins the round'};
   } else if (playerSelection === 'Paper' && computerSelection === 'Rock') {
-    return 'Paper covers rock. Player wins!';
+    return {winner: 'player', msg: 'Paper covers rock. Player wins the round!'};
   } else if (playerSelection === 'Rock' && computerSelection === 'Scissors') {
-    return 'Rock breaks scissors. Player wins!';
+    return {winner: 'player', msg: 'Rock breaks scissors. Player wins the round!'};
   } else if (playerSelection === 'Scissors' && computerSelection === 'Paper') {
-    return 'Scissors cuts paper. Player wins!'
-  } else return 'Please select from one of Rock, Paper, or Scissors'
+    return {winner: 'player', msg: 'Scissors cuts paper. Player wins the round!'}
+  } else {
+    return {winner: 'none', msg: 'Please select from one of Rock, Paper, or Scissors'}
+  }
 }
 
 // game fucntion //
-// create variable array with score for computer and player
+// create variable that holds a score object for player and computer
 // loop 5 times
+//// log the players scores
 //// prompt player for selection
+//// convert selection to capitalize case
 //// playRound
-//// report after each round who won
-//// increment winner score be 1
+//// log the msg
+//// increment winner score be 1 or 0 for none winner
+// log the final score and winner
+function game() {
+  let score = {player: 0, computer: 0}
+  for(i=0;i<5;i++) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}`);
+    let playerSelection = window.prompt("Make a guess (Rock, Paper, Scissors)")
 
-function game()
-// let PlayerSelection = window.prompt("Make a guess (Rock, Paper, Scissors)");
+    playerSelection = playerSelection.trim()
+                        .toLowerCase().charAt(0)
+                        .toUpperCase() + playerSelection.slice(1);
+
+    computerSelection = computerPlay();
+
+    let outcome = playRound(playerSelection, computerSelection);
+    console.log(outcome.msg);
+    if(outcome.msg === 'Please select from one of Rock, Paper, or Scissors') {
+      i--
+    }
+    score = tallyScore(outcome.winner, score, i)
+  }
+  if(score.player > score.computer) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Player wins the game!`);
+  } else if (score.player < score.computer) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
+  } else if (score.player === score.comuter) {
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. It's a tie!`);
+  }
+}
+
+// tallyScore Function
+// takes two parameters (winner, score)
+// increments score for Winner
+// returns updated score object
+function tallyScore(winner, score, i) {
+  if(winner === 'player') {
+    return {player: score.player + 1, computer: score.computer}
+  } else if (winner === 'computer') {
+    return {player: score.player, computer: score.computer + 1}
+  } else if (winner === 'none'){
+    return {player: score.player, computer: score.computer}
+  }
+}
