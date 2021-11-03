@@ -61,6 +61,7 @@ function playRound(playerSelection, computerSelection) {
 //// log the msg
 //// increment winner score be 1 or 0 for none winner
 // log the final score and winner
+// add option to play again
 function game() {
   let score = {player: 0, computer: 0}
   for(i=0;i<5;i++) {
@@ -80,12 +81,25 @@ function game() {
     }
     score = tallyScore(outcome.winner, score, i)
   }
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   if(score.player > score.computer) {
     console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Player wins the game!`);
   } else if (score.player < score.computer) {
     console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
   } else if (score.player === score.comuter) {
     console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. It's a tie!`);
+  }
+  console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
+  let playAgain = window.prompt("Would you like to play again?")
+  if (playAgain === 'Yes!') {
+    game();
+  } else {
+    console.log('Quiter!')
   }
 }
 
