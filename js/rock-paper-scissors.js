@@ -84,15 +84,12 @@ function game() {
     score = tallyScore(outcome.winner, score, i)
   }
 
-  // print fanfair.
-  fandangles();
-
   // print game outcome
   reportOutcome(score);
   console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
 
   // print fanfair.
-  fandangles();
+  addFandangles();
 
   // restart game
   playAgain();
@@ -105,19 +102,25 @@ function game() {
 
 function playAgain() {
   let playAgain = window.prompt("Would you like to play again?")
-  playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
-                playAgain.slice(1);
-  console.log(playAgain);
-  if (playAgain === 'Yes') {
-    game();
+  if(playAgain === null) {
+    console.log("Quiter!")
   } else {
-    console.log('Quiter!')
+    playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
+                playAgain.slice(1);
+
+    if (playAgain === 'Yes') {
+      game();
+    } else {
+      console.log('Quiter!')
+    }
   }
+
+  console.log(playAgain);
 }
 
-// fandangles function takes 0 parameters
-// log fandangles
-function fandangles() {
+// addFandangles function takes 0 parameters
+// log Fandangles to mark end of game
+function addFandangles() {
   for(i=0; i<3; i++) {
     console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
   }
@@ -128,7 +131,7 @@ function fandangles() {
 function reportOutcome(score) {
   // console.log(score.player);
   if(score.player === score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. It's a Tie!`);
+    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Tie Game!`);
   } else if (score.player < score.computer) {
     console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
   } else if (score.player > score.computer) {
