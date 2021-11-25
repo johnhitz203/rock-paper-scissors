@@ -1,3 +1,26 @@
+// Start the game
+// Add an eventListener to  start button that calls game()
+const start = document.querySelector('#start');
+start.addEventListener('click', () => {
+  game();
+});
+// switch(true) {
+//   case selection === 'rock':
+//     console.log("it's a rock");
+//   case selection === 'paper':
+//     console.log("it's paper");
+//   case selection === 'scissors':
+//     console.log("it's scissors");
+// }
+// rock.addEventListener('click', (e) => {
+//   console.log(e.path[0].id);
+//   if(e.path[0].id === 'rock') {
+//     let outcome = playRound('Rock', computerPlay());
+//     console.log('WTF is going on in here?')
+//     console.log(outcome.msg);
+//   }
+// });
+
 // Computer Play Function randomly returns 'Rock', 'Paper', or 'Scissors'
 // Create array with 'Rock', 'Paper', 'Scissors'
 // Use random number between 0 and 2 to access the array by index
@@ -63,36 +86,40 @@ function playRound(playerSelection, computerSelection) {
 // log the final score and winner
 // add option to play again
 function game() {
+  const game_board = document.querySelector('#game_board');
+  const buttons = game_board.querySelectorAll('button');
+  const display_score = document.querySelector('#display_score');
   let score = {player: 0, computer: 0}
-  let rounds = window.prompt("How many rounds would you like to play?", 5);
+  display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
 
-  for(i=0; i<rounds; i++) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}`);
-    let playerSelection = window.prompt("Make a guess (Rock, Paper, Scissors)")
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const div = document.querySelector('#result');
+      const selection = (button.id).replace(/^\w/, (c) => c.toUpperCase());
+      let outcome = playRound(selection, computerPlay());
+      div.textContent = outcome.msg;
+      score = tallyScore(outcome.winner, score);
+      display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
+      if(score.player === 5 || score.computer === 5) {
+        const winner = declareWinner(score);
+        const game = document.createElement('div');
+        game.textContent = winner;
+        const board = document.querySelector('#game_board');
+        board.appendChild(game);
+      }
+    });
+  });
+}
 
-    playerSelection = playerSelection.trim()
-                        .toLowerCase().charAt(0)
-                        .toUpperCase() + playerSelection.slice(1);
-
-    computerSelection = computerPlay();
-
-    let outcome = playRound(playerSelection, computerSelection);
-    console.log(outcome.msg);
-    if(outcome.msg === 'Please select from one of Rock, Paper, or Scissors') {
-      i--
-    }
-    score = tallyScore(outcome.winner, score, i)
+function declareWinner(score) {
+  switch (true) {
+    case score.player > score.computer:
+      return `Player wins ${score.player} to ${score.computer}`
+      break
+    case score.computer > score.player:
+      return `Computer wins ${score.computer} to ${score.player}`
+      break
   }
-
-  // print game outcome
-  reportOutcome(score);
-  console.log("If you would like to play again type Yes in the prompt above!".toUpperCase())
-
-  // print fanfair.
-  addFandangles();
-
-  // restart game
-  playAgain();
 }
 
 // playAgain function accepts 0 parameters
@@ -143,7 +170,7 @@ function reportOutcome(score) {
 // takes two parameters (winner, score)
 // increments score for Winner
 // returns updated score object
-function tallyScore(winner, score, i) {
+function tallyScore(winner, score) {
   if(winner === 'player') {
     return {player: score.player + 1, computer: score.computer}
   } else if (winner === 'computer') {
