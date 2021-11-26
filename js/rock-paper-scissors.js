@@ -2,24 +2,11 @@
 // Add an eventListener to  start button that calls game()
 const start = document.querySelector('#start');
 start.addEventListener('click', () => {
+  const body = document.querySelector('body');
   game();
+  body.removeChild(start);
 });
-// switch(true) {
-//   case selection === 'rock':
-//     console.log("it's a rock");
-//   case selection === 'paper':
-//     console.log("it's paper");
-//   case selection === 'scissors':
-//     console.log("it's scissors");
-// }
-// rock.addEventListener('click', (e) => {
-//   console.log(e.path[0].id);
-//   if(e.path[0].id === 'rock') {
-//     let outcome = playRound('Rock', computerPlay());
-//     console.log('WTF is going on in here?')
-//     console.log(outcome.msg);
-//   }
-// });
+
 
 // Computer Play Function randomly returns 'Rock', 'Paper', or 'Scissors'
 // Create array with 'Rock', 'Paper', 'Scissors'
@@ -75,16 +62,11 @@ function playRound(playerSelection, computerSelection) {
 }
 
 // game fucntion //
-// create variable that holds a score object for player and computer
-// loop 5 times
-//// log the players scores
-//// prompt player for selection
-//// convert selection to capitalize case
-//// playRound
-//// log the msg
-//// increment winner score be 1 or 0 for none winner
-// log the final score and winner
-// add option to play again
+// Select buttons in game_board
+// Create variable to hold score object
+// Display Score
+// Add eventListener to buttons in game_board
+////
 function game() {
   const game_board = document.querySelector('#game_board');
   const buttons = game_board.querySelectorAll('button');
@@ -101,69 +83,58 @@ function game() {
       score = tallyScore(outcome.winner, score);
       display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
       if(score.player === 5 || score.computer === 5) {
-        const winner = declareWinner(score);
-        const game = document.createElement('div');
-        game.textContent = winner;
-        const board = document.querySelector('#game_board');
-        board.appendChild(game);
+        // preventPlay() // Refactor querySelector for button into a function ???
+        // buttons.forEach((button) => {
+        //   button.removeEventListener('click', () => {});
+        // });
+        declareWinner(score);
       }
     });
   });
 }
 
+// function preventPlay() {
+//   console.log("No More!")
+// }
+
 function declareWinner(score) {
+  let winner;
   switch (true) {
     case score.player > score.computer:
-      return `Player wins ${score.player} to ${score.computer}`
+      winner = `Player wins ${score.player} to ${score.computer}`
       break
     case score.computer > score.player:
-      return `Computer wins ${score.computer} to ${score.player}`
+      winner = `Computer wins ${score.computer} to ${score.player}`
       break
   }
+  const game = document.createElement('div');
+  game.setAttribute('id', 'winner');
+  game.textContent = winner;
+  const board = document.querySelector('#game_board');
+  board.appendChild(game);
+  playAgain();
 }
 
 // playAgain function accepts 0 parameters
-// ask if player would like to play play again
-// clean up response
-// reset game'
-
+// presents player with a button to play again
+// add on click eventListener
+//// remove the winner div
+//// reset score
+//// call game
 function playAgain() {
-  let playAgain = window.prompt("Would you like to play again?")
-  if(playAgain === null) {
-    console.log("Quiter!")
-  } else {
-    playAgain = playAgain.trim().toLowerCase().charAt(0).toUpperCase() +
-                playAgain.slice(1);
+  const game_board = document.querySelector('#game_board');
+  const result = document.querySelector('#result');
+  const playAgain = document.createElement('button');
 
-    if (playAgain === 'Yes') {
-      game();
-    } else {
-      console.log('Quiter!')
-    }
-  }
-
-  console.log(playAgain);
-}
-
-// addFandangles function takes 0 parameters
-// log Fandangles to mark end of game
-function addFandangles() {
-  for(i=0; i<3; i++) {
-    console.log("*!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!**!*!*!*!*!*!*")
-  }
-}
-
-// reportOutcome function takes one parameter (score)
-// logs the game outcome
-function reportOutcome(score) {
-  // console.log(score.player);
-  if(score.player === score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Tie Game!`);
-  } else if (score.player < score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Computer wins the game!`);
-  } else if (score.player > score.computer) {
-    console.log(`Score is Player: ${score.player} | Computer: ${score.computer}. Player wins the game!`);
-  }
+  playAgain.textContent = 'Play Again';
+  game_board.appendChild(playAgain);
+  playAgain.addEventListener('click', () => {
+    result.textContent = "";
+    const winner_div = document.querySelector('#winner');
+    game_board.removeChild(winner_div);
+    game_board.removeChild(playAgain);
+    game();
+  });
 }
 
 // tallyScore Function
