@@ -75,22 +75,24 @@ function game() {
   display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
 
   buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const div = document.querySelector('#result');
-      const selection = (button.id).replace(/^\w/, (c) => c.toUpperCase());
-      let outcome = playRound(selection, computerPlay());
-      div.textContent = outcome.msg;
-      score = tallyScore(outcome.winner, score);
-      display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
-      if(score.player === 5 || score.computer === 5) {
-        // preventPlay() // Refactor querySelector for button into a function ???
-        // buttons.forEach((button) => {
-        //   button.removeEventListener('click', () => {});
-        // });
-        declareWinner(score);
-      }
-    });
+    button.addEventListener('click', takeTurn(button, score));
   });
+}
+
+function takeTurn(button, score) {
+  const div = document.querySelector('#result');
+  const selection = (button.id).replace(/^\w/, (c) => c.toUpperCase());
+  let outcome = playRound(selection, computerPlay());
+  div.textContent = outcome.msg;
+  score = tallyScore(outcome.winner, score);
+  display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
+  if(score.player === 5 || score.computer === 5) {
+    // preventPlay() // Refactor querySelector for button into a function ???
+    // buttons.forEach((button) => {
+    //   button.removeEventListener('click', () => {});
+    // });
+    declareWinner(score);
+  }
 }
 
 // function preventPlay() {
