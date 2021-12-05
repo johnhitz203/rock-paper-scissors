@@ -1,21 +1,23 @@
+// Score object holds score and has Function
+// to increment buth the player and computer
+// score and to reset the score for a new game.
 const Score = {
   player: 0,
   computer: 0,
   getScore: function() {
-    return Score
+    return this
   },
   incPlayer: function() {
-    Score.player++
+    this.player++
   },
   incComputer: function() {
-    Score.computer++
+    this.computer++
   },
   reset: function() {
-    Score.player = 0;
-    Score.computer = 0;
+    this.player = 0;
+    this.computer = 0;
   }
 }
-
 
 // Start the game
 // Add an eventListener to  start button that calls game()
@@ -25,7 +27,6 @@ start.addEventListener('click', () => {
   game();
   body.removeChild(start);
 });
-
 
 // Computer Play Function randomly returns 'Rock', 'Paper', or 'Scissors'
 // Create array with 'Rock', 'Paper', 'Scissors'
@@ -94,20 +95,15 @@ function game() {
   display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
 
   buttons.forEach((button, score) => {
-    button.addEventListener('click', takeTurn);
+    let selection = button.addEventListener('click', takeTurn);
   });
 }
 
-function getSelection(button) {
-  return (button.id).replace(/^\w/, (c) => c.toUpperCase());
-}
-
-
 function takeTurn() {
   const div = document.querySelector('#result');
-  const button = document.getElementById('rock');
-  console.log(button);
-  let selection = getSelection(button);
+  // this refers to the element that the eventListener bound to
+  // ie this.id returns the id of the button
+  let selection = (this.id).replace(/^\w/, (c) => c.toUpperCase());
   let outcome = playRound(selection, computerPlay());
   div.textContent = outcome.msg;
   tallyScore(outcome.winner);
@@ -121,10 +117,6 @@ function takeTurn() {
     declareWinner(Score.getScore());
   }
 }
-
-// function preventPlay() {
-//   console.log("No More!")
-// }
 
 function declareWinner(score) {
   let winner;
@@ -176,7 +168,5 @@ function tallyScore(winner) {
     Score.incPlayer();
   } else if (winner === 'computer') {
     Score.incComputer();
-  } // else if (winner === 'none'){
-  //   return {player: score.player, computer: score.computer}
-  // }
+  }
 }
