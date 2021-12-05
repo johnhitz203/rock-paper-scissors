@@ -89,14 +89,23 @@ function playRound(playerSelection, computerSelection) {
 ////
 function game() {
   const game_board = document.querySelector('#game_board');
+  const score_board = document.querySelector('.score-board');
   const buttons = game_board.querySelectorAll('button');
-  const display_score = document.querySelector('#display_score');
-  let score = Score.getScore();
-  display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
+  score_board.style.backgroundColor="#CBC2C3";
+
+  displayScore();
 
   buttons.forEach((button, score) => {
     let selection = button.addEventListener('click', takeTurn);
   });
+}
+
+function displayScore() {
+  let score = Score.getScore();
+  const player_score = document.querySelector('#player-score');
+  const computer_score = document.querySelector('#computer-score');
+  player_score.textContent = `Player: ${score.player}`
+  computer_score.textContent = `Computer: ${score.computer}`
 }
 
 function takeTurn() {
@@ -107,7 +116,7 @@ function takeTurn() {
   let outcome = playRound(selection, computerPlay());
   div.textContent = outcome.msg;
   tallyScore(outcome.winner);
-  display_score.textContent = `Player: ${Score.player} Computer: ${Score.computer}`
+  displayScore()
   if(Score.player === 5 || Score.computer === 5) {
     const game_board = document.querySelector('#game_board');
     const buttons = game_board.querySelectorAll('button');
@@ -131,7 +140,7 @@ function declareWinner(score) {
   const game = document.createElement('div');
   game.setAttribute('id', 'winner');
   game.textContent = winner;
-  const board = document.querySelector('#game_board');
+  const board = document.querySelector('.score-board');
   board.appendChild(game);
   playAgain();
 }
@@ -146,13 +155,16 @@ function playAgain() {
   const game_board = document.querySelector('#game_board');
   const result = document.querySelector('#result');
   const playAgain = document.createElement('button');
+  const score_board = document.querySelector('.score-board');
+  const buttons = document.getElementsByClassName('.buttons');
+  console.log(buttons);
 
   playAgain.textContent = 'Play Again';
   game_board.appendChild(playAgain);
   playAgain.addEventListener('click', () => {
     result.textContent = "";
     const winner_div = document.querySelector('#winner');
-    game_board.removeChild(winner_div);
+    score_board.removeChild(winner_div);
     game_board.removeChild(playAgain);
     Score.reset();
     game();
