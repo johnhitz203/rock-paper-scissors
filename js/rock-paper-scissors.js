@@ -1,3 +1,22 @@
+const Score = {
+  player: 0,
+  computer: 0,
+  getScore: function() {
+    return Score
+  },
+  incPlayer: function() {
+    Score.player++
+  },
+  incComputer: function() {
+    Score.computer++
+  },
+  reset: function() {
+    Score.player = 0;
+    Score.computer = 0;
+  }
+}
+
+
 // Start the game
 // Add an eventListener to  start button that calls game()
 const start = document.querySelector('#start');
@@ -71,27 +90,35 @@ function game() {
   const game_board = document.querySelector('#game_board');
   const buttons = game_board.querySelectorAll('button');
   const display_score = document.querySelector('#display_score');
-  let score = {player: 0, computer: 0}
+  let score = Score.getScore();
   display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
 
-  buttons.forEach((button) => {
-    button.addEventListener('click', takeTurn(button, score));
+  buttons.forEach((button, score) => {
+    button.addEventListener('click', takeTurn);
   });
 }
 
-function takeTurn(button, score) {
+function getSelection(button) {
+  return (button.id).replace(/^\w/, (c) => c.toUpperCase());
+}
+
+
+function takeTurn() {
   const div = document.querySelector('#result');
-  const selection = (button.id).replace(/^\w/, (c) => c.toUpperCase());
+  const button = document.getElementById('rock');
+  console.log(button);
+  let selection = getSelection(button);
   let outcome = playRound(selection, computerPlay());
   div.textContent = outcome.msg;
-  score = tallyScore(outcome.winner, score);
-  display_score.textContent = `Player: ${score.player} Computer: ${score.computer}`
-  if(score.player === 5 || score.computer === 5) {
-    // preventPlay() // Refactor querySelector for button into a function ???
-    // buttons.forEach((button) => {
-    //   button.removeEventListener('click', () => {});
-    // });
-    declareWinner(score);
+  tallyScore(outcome.winner);
+  display_score.textContent = `Player: ${Score.player} Computer: ${Score.computer}`
+  if(Score.player === 5 || Score.computer === 5) {
+    const game_board = document.querySelector('#game_board');
+    const buttons = game_board.querySelectorAll('button');
+    buttons.forEach((button) => {
+      button.removeEventListener('click', takeTurn);
+    });
+    declareWinner(Score.getScore());
   }
 }
 
@@ -135,6 +162,7 @@ function playAgain() {
     const winner_div = document.querySelector('#winner');
     game_board.removeChild(winner_div);
     game_board.removeChild(playAgain);
+    Score.reset();
     game();
   });
 }
@@ -143,12 +171,12 @@ function playAgain() {
 // takes two parameters (winner, score)
 // increments score for Winner
 // returns updated score object
-function tallyScore(winner, score) {
+function tallyScore(winner) {
   if(winner === 'player') {
-    return {player: score.player + 1, computer: score.computer}
+    Score.incPlayer();
   } else if (winner === 'computer') {
-    return {player: score.player, computer: score.computer + 1}
-  } else if (winner === 'none'){
-    return {player: score.player, computer: score.computer}
-  }
+    Score.incComputer();
+  } // else if (winner === 'none'){
+  //   return {player: score.player, computer: score.computer}
+  // }
 }
